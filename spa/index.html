@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Single Page App</title>
+		<link type="text/css" rel="stylesheet" href="/style/main.css">
+		<script type="module" src="/navigation.js"></script>
+	</head>
+	<body>
+		<aside class="hidden"><p></p></aside>
+		<header>
+			<h1>Single Page App</h1>
+			<p>&nbsp;</p>
+		</header>
+		<nav>
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/register">Register</a></li>
+				<li><a href="/foo">Foo</a></li>
+				<li><a href="/login">Log in</a></li>
+				<li><a href="/logout">Log out</a></li>
+			</ul>
+		</nav>
+		<main>
+			<!-- page content goes here -->
+		</main>
+		<footer>
+			<p>&nbsp;</p>
+		</footer>
+			<template id="home">
+	</template>
+	<template id="login">
+		<form name="login">
+			<p><label for="email">Username</label><br /><input type="text" name="user" placeholder="username" /></p>
+			<p><label for="pass">Password</label><br /><input type="password" name="pass" placeholder="password" /></p>
+			<p><button type="submit">Log in</button></p>
+		</form>
+	</template>
+	<template id="register">
+		<form name="register">
+			<p><label for="name">Username</label><br /><input type="text" name="user" placeholder="full name" /></p>
+			<p><label for="pass">Password</label><br /><input type="password" name="pass" placeholder="password" /></p>
+			<p><button type="submit">Create account</button></p>
+		</form>
+	</template>
+	<template id="logout">
+			<p>Do you want to log out?</p>
+			<p><button>OK</button><button>Cancel</button></p>
+	</template>
+	<template id="foo">
+		<h2>Uploading File Demo</h2>
+		<form name="upload" method="post">
+			<p><label for="pass">Choose a file</label><br /><input type="file" name="file" /></p>
+			<p><button type="submit">Upload</button></p>
+		</form>
+		<h2>Useful Data</h2>
+		<p>You can pass data to a page using different parts of the url:</p>
+		<p>Try <a href="/foo/bar?number=42#12345">this link</a> to see an example.</p>
+		<ul>
+		<li id="href">href</li>
+		<li id="pathname">path</li>
+		<li id="search">search</li>
+		<li id="hash">hash</li>
+		</ul>
+		<p>This page is a placeholder to help you understand how to access data in the URL and upload a file to a REST API. Once you understand how it works it should be removed from your project.</p>
+	</template>
+	<template id="quote">
+		<section>
+			<h2></h2>
+			<p></p>
+		</section>
+	</template>
+	</body>
+</html>
