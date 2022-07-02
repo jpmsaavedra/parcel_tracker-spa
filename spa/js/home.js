@@ -1,14 +1,14 @@
 
 /* home.js */
 
-import { customiseNavbar } from '../util.js'
+import { customiseNavbar, loadPage } from '../util.js'
 
 export async function setup(node) {
 	console.log('HOME: setup')
 	try {
 		console.log(node)
 		document.querySelector('header p').innerText = 'Home'
-		customiseNavbar(['home', 'foo', 'logout']) // navbar if logged in
+		customiseNavbar(['home', 'foo', 'send', 'logout']) // navbar if logged in
 		const token = localStorage.getItem('authorization')
 		console.log(token)
 		if(token === null) {
@@ -44,11 +44,13 @@ async function showContent(node) {
 	document.querySelector('aside').classList.remove('hidden')
 	const template = document.querySelector('template#loggedin')
 	const fragment = template.content.cloneNode(true)
+
 	fragment.querySelector('h2').innerText = "Logged in page"
 	fragment.querySelector('p').innerText = "Loren ipsum"
-	node.appendChild(fragment)
 
-	document.querySelector
+	// fragment.getElementById('button').addEventListener('click', await redirect)
+
+	node.appendChild(fragment)
 
 	// hide "LOADING" message
 	document.querySelector('aside').classList.add('hidden')

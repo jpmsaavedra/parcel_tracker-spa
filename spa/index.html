@@ -19,6 +19,7 @@
 				<li><a href="/register">Register</a></li>
 				<li><a href="/foo">Foo</a></li>
 				<li><a href="/login">Log in</a></li>
+				<li><a href="/send">Send Parcel</a></li>
 				<li><a href="/logout">Log out</a></li>
 			</ul>
 		</nav>
@@ -72,11 +73,24 @@
 		</section>
 	</template>
 	<template id="loggedin">
-		<button>Send Parcel</button>
+		<button id="button">Send Parcel</button>
 		<section>		
 			<h2></h2>
 			<p></p>
 		</section>
 	</template>
+
+	<template id="send">
+		<h2>Send Parcel</h2>
+		<form name="upload" method="post">
+			<p><label for="senderpostcode">Your Postcode</label><br /><input type="text" name="senderpostcode" placeholder="post code" /></p>
+			<p><label for="receiverpostcode">Recipient's Postcode</label><br /><input type="text" name="receiverpostcode" placeholder="postcode" /></p>
+			<p><label for="weight">Weight</label><br /><input type="range" name="weight" min="1" max="20" /></p>
+			<p><label for="user">Recepient's Name</label><br /><input type="text" name="user" placeholder="name" /></p>
+			<p><label for="address">Full Address</label><br /><textarea type="text" name="address" placeholder="address" rows="4" cols="40" ></textarea></p>
+			<p><button type="submit">Send</button></p>
+		</form>
+	</template>
+
 	</body>
 </html>
