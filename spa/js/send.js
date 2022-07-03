@@ -15,8 +15,6 @@ export async function setup(node) {
 		}
 		// there is a token in localstorage
 		node.querySelector('form').addEventListener('submit', await sendParcel)
-
-
 	} catch(err) {
 		console.error(err)
 	}

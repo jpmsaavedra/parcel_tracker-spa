@@ -17,6 +17,6 @@
 		"util": "./api/modules/util.js",
 
 		"parcels": "./api/modules/parcels.js",
-		"nanoid": "https://deno.land/x/nanoid/mod.ts"
+		"cryptoRandomString": "https://deno.land/x/crypto_random_string@1.0.0/mod.ts"
 	}
 }

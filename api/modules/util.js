@@ -4,6 +4,7 @@
 import { etag } from 'oak'
 import { Base64 } from 'bb64'
 // import { Md5 } from 'md5'
+// import { customAlphabet } from 'nanoidCustom'
 
 export function extractCredentials(token) {
 	if(token === undefined) throw new Error('no auth header')
@@ -41,3 +42,8 @@ export async function getEtag(path) {
 	const tag = await etag.calculate(stat)
 	return tag
 }
+
+// export async function getTrackNum() {
+// 	const num = await customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
+// 	return num
+// }
