@@ -16,6 +16,7 @@
 		"routes": "./api/routes.js",
 		"util": "./api/modules/util.js",
 
-		"parcels": "./api/modules/parcels.js"
+		"parcels": "./api/modules/parcels.js",
+		"nanoid": "https://deno.land/x/nanoid/mod.ts"
 	}
 }

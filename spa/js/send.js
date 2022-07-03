@@ -26,6 +26,7 @@ async function sendParcel() {
 	event.preventDefault()
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
+	data.sender = localStorage.getItem('username')
 	console.log(JSON.stringify(data))
 	const url = '/api/send'
 	const options = {
@@ -39,16 +40,13 @@ async function sendParcel() {
 	}
 	const response = await fetch(url, options)
 	console.log(response)
-	// const json = await response.json()
-	// console.log(json)
-	// await loadPage('home')
-	// console.log(json)
+	const json = await response.json()
+	console.log(json)
 
-	// if (response.status === 200) {
-	// 	showMessage('Parcel sent!')
-	// 	loadPage('home')
-	// 	await loadPage('home')
-	// } else {
-	// 	await loadPage('send')
-	// }
+	if (response.status === 201) {
+		showMessage('Parcel sent!')
+		loadPage('home')
+	} else {
+		loadPage('send')
+	}
 }
