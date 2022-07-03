@@ -13,8 +13,9 @@ export async function send(parcel) {
 
 	console.log(trackingNumber)
 
-	const sql = `INSERT INTO parcels(sender_post, recipient_post, weight, recipient_name, address, sender_name, timestamp, status, track_number) VALUES("${sendPost}", "${recPost}"`
-
+	const sql = `INSERT INTO parcels(track_number, sender_name, sender_post, recipient_name, recipient_post, address, weight, time, status) VALUES("${trackingNumber}", "${sender}", "${sendPost}", "${recipient}", "${recPost}", "${address}", "${weight}", "${timestamp}", "${status}")`
+	console.log(sql)
+	await db.query(sql)
 	console.log('PARCEL SENT')
 	return true
 }
