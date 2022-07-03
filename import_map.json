@@ -14,6 +14,9 @@
 		"db": "./api/modules/db.js",
 		"middleware": "./api/middleware.js",
 		"routes": "./api/routes.js",
-		"util": "./api/modules/util.js"
+		"util": "./api/modules/util.js",
+
+		"parcels": "./api/modules/parcels.js",
+		"cryptoRandomString": "https://deno.land/x/crypto_random_string@1.0.0/mod.ts"
 	}
 }
