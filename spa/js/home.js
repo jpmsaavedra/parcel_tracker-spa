@@ -73,9 +73,11 @@ async function showContent(node) {
 	parcelsList.forEach((parcel) => {
 		const template2 = document.querySelector('template#loggedin')
 		const fragment2 = template2.content.cloneNode(true)
+		const unixTime = parcel.time
+		const dateTime = new Date(+unixTime)
 		fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
 		fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-		fragment2.querySelector('#timeadded').innerText = `${parcel.time}`
+		fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
 		fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
 		node.appendChild(fragment2)
 	})
