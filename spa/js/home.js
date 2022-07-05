@@ -53,13 +53,32 @@ async function showContent(node) {
 	fragment.querySelector('button').innerText = "Send Parcel"
 	node.appendChild(fragment)
 
-	const template2 = document.querySelector('template#loggedin')
-	const fragment2 = template2.content.cloneNode(true)
-	fragment2.querySelector('#recname').innerText = "Joao"
-	fragment2.querySelector('#destpostcode').innerText = "CV1 2HX"
-	fragment2.querySelector('#timeadded').innerText = "05/07/22 18:00"
-	fragment2.querySelector('#parcelstatus').innerText = "not-dispatched"
-	node.appendChild(fragment2)
+	const url = 'api/parcels'
+	const options = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/vnd.api+json',
+			'Accept': 'application/vnd.api+json',
+			'Authorization': localStorage.getItem('authorization')
+		}
+	}
+
+	const response = await fetch(url, options)
+	console.log(response)
+	const json = await response.json()
+	// console.log(json.data.parcels)
+	const parcelsList = json.data.parcels
+	console.log(parcelsList)
+
+	parcelsList.forEach((parcel) => {
+		const template2 = document.querySelector('template#loggedin')
+		const fragment2 = template2.content.cloneNode(true)
+		fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
+		fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
+		fragment2.querySelector('#timeadded').innerText = `${parcel.time}`
+		fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+		node.appendChild(fragment2)
+	})
 
 	// hide "LOADING" message
 	document.querySelector('aside').classList.add('hidden')

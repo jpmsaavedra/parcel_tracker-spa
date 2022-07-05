@@ -20,3 +20,19 @@ export async function send(parcel) {
 	console.log('PARCEL SENT')
 	return true
 }
+
+export async function getSenderParcels(user) {
+	let sql = `SELECT * FROM parcels WHERE sender_name="${user}";`
+	try {
+		const data = await db.query(sql)
+		return data
+	} catch(err) {
+		console.log('connection login error thrown', err)
+		err.data = {
+			code: 500,
+			title: '500 Internal server error',
+			detail: 'the API database is currently down'
+		}
+		throw err
+	}
+}
