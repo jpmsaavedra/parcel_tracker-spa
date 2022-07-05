@@ -35,7 +35,7 @@ async function addContent(node) {
 	document.querySelector('aside').classList.remove('hidden')
 	const template = document.querySelector('template#loggedoff')
 	const fragment = template.content.cloneNode(true)
-	fragment.querySelector('h2').innerText = "Welcome to the best parcel delivery app!"
+	fragment.querySelector('h2').innerText = "Welcome to the best parcel delivery app out there!"
 	fragment.querySelector('p').innerText = "Login or Sign Up to start using it."
 	node.appendChild(fragment)
 
@@ -55,8 +55,10 @@ async function showContent(node) {
 
 	const template2 = document.querySelector('template#loggedin')
 	const fragment2 = template2.content.cloneNode(true)
-	fragment2.querySelector('h2').innerText = "Logged in page"
-	fragment2.querySelector('p').innerText = "Loren ipsum"
+	fragment2.querySelector('#recname').innerText = "Joao"
+	fragment2.querySelector('#destpostcode').innerText = "CV1 2HX"
+	fragment2.querySelector('#timeadded').innerText = "05/07/22 18:00"
+	fragment2.querySelector('#parcelstatus').innerText = "not-dispatched"
 	node.appendChild(fragment2)
 
 	// hide "LOADING" message
