@@ -13,10 +13,10 @@ export async function setup(node) {
 		console.log(token)
 		if(token === null) {
 			customiseNavbar(['home', 'register', 'login']) //navbar if logged out
-			await addContent(node)
+			await noLogin(node)
 		} else {
-			await showContent(node)
-			node.getElementById('button').addEventListener('click', await redirect)
+			await loggedIn(node)
+			node.getElementById('button').addEventListener('click', await redirectSend)
 		}
 		// add content to the page
 		//await addContent(node)
@@ -25,11 +25,11 @@ export async function setup(node) {
 	}
 }
 
-async function redirect() {
+async function redirectSend() {
 	loadPage('send')
 }
 
-async function addContent(node) {
+async function noLogin(node) {
 	// show "LOADING" message
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
@@ -43,17 +43,19 @@ async function addContent(node) {
 	document.querySelector('aside').classList.add('hidden')
 }
 
-async function showContent(node) {
+async function loggedIn(node) {
 	// show "LOADING" message
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
+
 	
+
+
 	const template = document.querySelector('template#button')
 	const fragment = template.content.cloneNode(true)
 	fragment.querySelector('button').innerText = "Send Parcel"
 	node.appendChild(fragment)
-
-	const url = 'api/parcels'
+	const url = 'api/user/parcels'
 	const options = {
 		method: 'GET',
 		headers: {
@@ -62,14 +64,12 @@ async function showContent(node) {
 			'Authorization': localStorage.getItem('authorization')
 		}
 	}
-
 	const response = await fetch(url, options)
 	console.log(response)
 	const json = await response.json()
 	// console.log(json.data.parcels)
 	const parcelsList = json.data.parcels
 	console.log(parcelsList)
-
 	parcelsList.forEach((parcel) => {
 		const template2 = document.querySelector('template#loggedin')
 		const fragment2 = template2.content.cloneNode(true)
