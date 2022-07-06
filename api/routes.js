@@ -142,5 +142,32 @@ router.get('/api/user/parcels', async context => {
 	}
 })
 
+router.post('/api/courier/assign', async context => {
+	console.log('POST /api/courier/assign')
+	try {
+		const token = context.request.headers.get('Authorization')
+		console.log(`auth: ${token}`)
+		const body = await context.request.body()
+		const data = await body.value
+		const trackNumber = data.textbox
+		// await send(data)
+		context.response.status = 201
+		context.response.body = JSON.stringify(
+			{
+				data: {
+					message: 'file uploaded'
+				}
+			}
+		)
+	} catch(err) {
+		err.data = {
+			code: 500,
+			title: '500 Internal Server Error',
+			detail: err.message
+		}
+		throw err
+	}
+})
+
 export default router
 

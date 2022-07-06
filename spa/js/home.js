@@ -34,7 +34,21 @@ async function redirectSend() {
 }
 
 async function assignParcel() {
-	
+	event.preventDefault()
+	const formData = new FormData(event.target)
+	const data = Object.fromEntries(formData.entries())
+	const url = 'api/courier/assign'
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/vnd.api+json',
+			'Accept': 'application/vnd.api+json',
+			'Authorization': localStorage.getItem('authorization')
+		},
+		body: JSON.stringify(data)
+	}
+	const response = await fetch(url, options)
+	console.log(response)
 }
 
 async function noLogin(node) {
