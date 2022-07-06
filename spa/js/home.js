@@ -35,8 +35,8 @@ async function addContent(node) {
 	document.querySelector('aside').classList.remove('hidden')
 	const template = document.querySelector('template#loggedoff')
 	const fragment = template.content.cloneNode(true)
-	fragment.querySelector('h2').innerText = "Logged off page"
-	fragment.querySelector('p').innerText = "Loren ipsum"
+	fragment.querySelector('h2').innerText = "Welcome to the best parcel delivery app out there!"
+	fragment.querySelector('p').innerText = "Login or Sign Up to start using it."
 	node.appendChild(fragment)
 
 	// hide "LOADING" message
@@ -47,11 +47,40 @@ async function showContent(node) {
 	// show "LOADING" message
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
-	const template = document.querySelector('template#loggedin')
+	
+	const template = document.querySelector('template#button')
 	const fragment = template.content.cloneNode(true)
-	fragment.querySelector('h2').innerText = "Logged in page"
-	fragment.querySelector('p').innerText = "Loren ipsum"
+	fragment.querySelector('button').innerText = "Send Parcel"
 	node.appendChild(fragment)
+
+	const url = 'api/parcels'
+	const options = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/vnd.api+json',
+			'Accept': 'application/vnd.api+json',
+			'Authorization': localStorage.getItem('authorization')
+		}
+	}
+
+	const response = await fetch(url, options)
+	console.log(response)
+	const json = await response.json()
+	// console.log(json.data.parcels)
+	const parcelsList = json.data.parcels
+	console.log(parcelsList)
+
+	parcelsList.forEach((parcel) => {
+		const template2 = document.querySelector('template#loggedin')
+		const fragment2 = template2.content.cloneNode(true)
+		const unixTime = parcel.time
+		const dateTime = new Date(+unixTime)
+		fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
+		fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
+		fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
+		fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+		node.appendChild(fragment2)
+	})
 
 	// hide "LOADING" message
 	document.querySelector('aside').classList.add('hidden')
