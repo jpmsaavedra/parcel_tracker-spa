@@ -16,7 +16,11 @@ export async function setup(node) {
 			await noLogin(node)
 		} else {
 			await loggedIn(node)
-			node.getElementById('button').addEventListener('click', await redirectSend)
+			// if(role === 1){
+			// 	node.getElementById('button').addEventListener('click', await redirectSend)
+			// } else if(role === 2){
+			// 	node.querySelector('form').addEventListener('submit', await redirectSend)
+			// }
 		}
 		// add content to the page
 		//await addContent(node)
@@ -27,6 +31,10 @@ export async function setup(node) {
 
 async function redirectSend() {
 	loadPage('send')
+}
+
+async function assignParcel() {
+	
 }
 
 async function noLogin(node) {
@@ -48,13 +56,6 @@ async function loggedIn(node) {
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
 
-	
-
-
-	const template = document.querySelector('template#button')
-	const fragment = template.content.cloneNode(true)
-	fragment.querySelector('button').innerText = "Send Parcel"
-	node.appendChild(fragment)
 	const url = 'api/user/parcels'
 	const options = {
 		method: 'GET',
@@ -68,17 +69,45 @@ async function loggedIn(node) {
 	console.log(response)
 	const json = await response.json()
 	// console.log(json.data.parcels)
+	const role = json.data.role
+
+	if(role === 1){
+		const template = document.querySelector('template#button')
+		const fragment = template.content.cloneNode(true)
+		fragment.querySelector('button').innerText = "Send Parcel"
+
+		fragment.querySelector('button').addEventListener('click', await redirectSend)
+
+		node.appendChild(fragment)
+	} else if (role === 2){
+		const template = document.querySelector('template#textbox')
+		const fragment = template.content.cloneNode(true)
+		fragment.querySelector('button').innerText = "Submit"
+
+		fragment.querySelector('form').addEventListener('submit', await assignParcel)
+
+		node.appendChild(fragment)
+	}
+
 	const parcelsList = json.data.parcels
 	console.log(parcelsList)
 	parcelsList.forEach((parcel) => {
-		const template2 = document.querySelector('template#loggedin')
+		const template2 = document.querySelector('template#loggedinuser')
 		const fragment2 = template2.content.cloneNode(true)
 		const unixTime = parcel.time
 		const dateTime = new Date(+unixTime)
-		fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
-		fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-		fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
-		fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+		const elapsedHours = Math.floor((Date.now() - unixTime)/1000/60/60)		
+		if(role === 1){
+			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
+			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
+			fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
+			fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+		} else if(role === 2){
+			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
+			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
+			fragment2.querySelector('#timeadded').innerText = `${parcel.weight}Kg`
+			fragment2.querySelector('#parcelstatus').innerText = `${elapsedHours} Hours`
+		}
 		node.appendChild(fragment2)
 	})
 

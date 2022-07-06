@@ -77,13 +77,30 @@
 			<button id="button"></button>
 		</section>
 	</template>
-	<template id="loggedin">	
+	<template id="textbox">
+		<section>
+			<form name="textbox" method="post">
+			<p><label for="textbox">Track Number:</label><input type="text" name="textbox" required="required" /></p>
+			<p><button type="submit">Send</button></p>
+		</form>
+		</section>
+	</template>
+	<template id="loggedinuser">	
 		<hr>
 		<section>		
 			<p id="recname"></p>
 			<p id="destpostcode"></p>
 			<p id="timeadded"></p>
 			<p id="parcelstatus"></p>
+		</section>
+	</template>
+	<template id="loggedincourier">	
+		<hr>
+		<section>		
+			<p id="recname"></p>
+			<p id="destpostcode"></p>
+			<p id="weight"></p>
+			<p id="elapsedtime"></p>
 		</section>
 	</template>
 

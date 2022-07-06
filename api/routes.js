@@ -122,14 +122,14 @@ router.get('/api/user/parcels', async context => {
 
 			context.response.body = JSON.stringify(
 				{
-					data: { parcels }
+					data: { parcels, role }
 				}, null, 2)
 		} else if(role === 2){
 			const parcels = await getCourierParcels(username)
 
 			context.response.body = JSON.stringify(
 				{
-					data: { parcels }
+					data: { parcels, role }
 				}, null, 2)
 		}
 	} catch(err) {
