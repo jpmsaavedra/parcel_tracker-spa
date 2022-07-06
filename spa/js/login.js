@@ -37,7 +37,7 @@ async function login() {
 		localStorage.setItem('username', json.data.username)
 		localStorage.setItem('authorization', token)
 		showMessage(`you are logged in as ${json.data.username}`)
-		await loadPage('foo')
+		await loadPage('home')
 	} else {
 		document.querySelector('input[name="pass"]').value = ''
 		showMessage(json.errors[0].detail)

@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Single Page App</title>
+		<title>Collection Tracker WebApp</title>
 		<link type="text/css" rel="stylesheet" href="/style/main.css">
 		<script type="module" src="/navigation.js"></script>
 	</head>
 	<body>
 		<aside class="hidden"><p></p></aside>
 		<header>
-			<h1>Single Page App</h1>
+			<h1>Collection Tracker WebApp</h1>
 			<p>&nbsp;</p>
 		</header>
 		<nav>
@@ -20,6 +20,7 @@
 				<li><a href="/foo">Foo</a></li>
 				<li><a href="/login">Log in</a></li>
 				<li><a href="/logout">Log out</a></li>
+				<li><a href="/send">Send Parcel</a></li>
 			</ul>
 		</nav>
 		<main>
@@ -65,11 +66,38 @@
 		</ul>
 		<p>This page is a placeholder to help you understand how to access data in the URL and upload a file to a REST API. Once you understand how it works it should be removed from your project.</p>
 	</template>
-	<template id="quote">
+	<template id="loggedoff">
 		<section>
 			<h2></h2>
 			<p></p>
 		</section>
 	</template>
+	<template id="button">
+		<section>
+			<button id="button"></button>
+		</section>
+	</template>
+	<template id="loggedin">	
+		<hr>
+		<section>		
+			<p id="recname"></p>
+			<p id="destpostcode"></p>
+			<p id="timeadded"></p>
+			<p id="parcelstatus"></p>
+		</section>
+	</template>
+
+	<template id="send">
+		<h2>Send Parcel</h2>
+		<form name="upload" method="post">
+			<p><label for="senderpostcode">Your Postcode</label><br /><input type="text" name="senderpostcode" placeholder="postcode" required="required" /></p>
+			<p><label for="receiverpostcode">Recipient's Postcode</label><br /><input type="text" name="receiverpostcode" placeholder="postcode" required="required" /></p>
+			<p><label for="weight">Weight</label><br /><input type="range" name="weight" min="1" max="20" value="1" oninput="this.nextElementSibling.value = this.value" /><output name="amount_val">1</output></p>
+			<p><label for="recipient">Recepient's Name</label><br /><input type="text" name="recipient" placeholder="name" required="required" /></p>
+			<p><label for="address">Full Address</label><br /><textarea type="text" name="address" placeholder="address" rows="4" cols="40" required="required" ></textarea></p>
+			<p><button type="submit">Send</button></p>
+		</form>
+	</template>
+
 	</body>
 </html>
