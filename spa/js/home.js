@@ -1,7 +1,7 @@
 
 /* home.js */
 
-import { customiseNavbar, loadPage } from '../util.js'
+import { customiseNavbar, loadPage, showMessage } from '../util.js'
 
 export async function setup(node) {
 	console.log('HOME: setup')
@@ -49,7 +49,17 @@ async function assignParcel() {
 	}
 	const response = await fetch(url, options)
 	console.log(response)
-	loadPage('home')
+	const json = await response.json()
+	console.log(json)
+
+	if(response.status === 200) {
+		showMessage(`parcel assigned to courier`)
+		await loadPage('home')
+	} else {
+		// document.querySelector('input[name="pass"]').value = ''
+		showMessage(json.errors[0].detail)
+	}
+
 }
 
 async function noLogin(node) {

@@ -154,7 +154,7 @@ router.post('/api/courier/assign', async context => {
 		const data = await body.value
 		const trackNumber = data.textbox
 		await assignCourier(trackNumber, username)
-		context.response.status = 201
+		context.response.status = 200
 		context.response.body = JSON.stringify(
 			{
 				data: {
@@ -164,9 +164,12 @@ router.post('/api/courier/assign', async context => {
 		)
 	} catch(err) {
 		err.data = {
-			code: 500,
-			title: '500 Internal Server Error',
+			// code: 500,
+			// title: '500 Internal Server Error',
+			code: err.code,
+			title: err.title,
 			detail: err.message
+			// detail: 'debugging'
 		}
 		throw err
 	}

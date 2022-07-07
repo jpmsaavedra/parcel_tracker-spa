@@ -69,13 +69,16 @@ export async function assignCourier(trackNumber, username) {
 		}
 		throw err
 	}
-	if(!records[0]) {
+	if(records.length === 0) {
 		const err = new Error()
-		err.data = {
-			code: 401,
-			title: 'Change to not found',
-			detail: `Change to number not found`
-		}
+		// err.data = {
+		// 	code: 401,
+		// 	title: 'Change to not found',
+		// 	detail: 'Change to number not found'
+		// }
+		err.code = 404
+		err.title = '404 Not found'
+		err.message = 'No parcels matching found'
 		throw err
 	}
 	sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
