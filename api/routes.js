@@ -5,7 +5,7 @@ import { Router } from 'oak'
 
 import { extractCredentials, dataURLtoFile, checkRole } from 'util'
 import { login, register } from 'accounts'
-import { send, getSenderParcels, getCourierParcels, assignCourier } from 'parcels'
+import { send, getSenderParcels, getCourierParcels, assignCourier, deliverParcel } from 'parcels'
 
 const router = new Router()
 
@@ -153,15 +153,30 @@ router.post('/api/courier/assign', async context => {
 		const body = await context.request.body()
 		const data = await body.value
 		const trackNumber = data.textbox
-		await assignCourier(trackNumber, username)
-		context.response.status = 200
-		context.response.body = JSON.stringify(
-			{
-				data: {
-					message: 'parcel assigned to courier'
+		const isToDeliver = await deliverParcel(trackNumber, username)
+		if(isToDeliver === true) {
+			context.response.status = 200
+			context.response.body = JSON.stringify(
+				{
+					data: {
+						message: 'parcel ready to be delivered',
+						todeliver: 'true'
+					}
 				}
-			}
 		)
+		} else {
+			await assignCourier(trackNumber, username)
+			// await assignCourier(trackNumber, username)
+			context.response.status = 200
+			context.response.body = JSON.stringify(
+				{
+					data: {
+						message: 'parcel assigned to courier',
+						todeliver: 'false'
+					}
+				}
+			)
+		}
 	} catch(err) {
 		err.data = {
 			// code: 500,

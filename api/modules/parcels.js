@@ -78,9 +78,33 @@ export async function assignCourier(trackNumber, username) {
 		// }
 		err.code = 404
 		err.title = '404 Not found'
-		err.message = 'No parcels matching found'
+		err.message = 'No matching parcels found'
 		throw err
 	}
 	sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
 	records = await db.query(sql)
+}
+
+export async function deliverParcel(trackNumber, username) {
+	let sql = `SELECT * FROM parcels WHERE track_number="${trackNumber}" AND assigned_to="${username}"`
+	let records
+	try {
+		records = await db.query(sql)
+		console.log(records)
+		
+	} catch(err) {
+		console.log('connection login error thrown', err)
+		err.data = {
+			code: 500,
+			title: '500 Internal server error',
+			detail: 'the API database is currently down'
+		}
+		throw err
+	}
+	if(records.length === 0) {
+		return false
+	}
+	// sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
+	// records = await db.query(sql)
+	return true
 }

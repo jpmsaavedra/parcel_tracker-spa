@@ -37,6 +37,7 @@ async function assignParcel() {
 	event.preventDefault()
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
+	console.log(data)
 	const url = 'api/courier/assign'
 	const options = {
 		method: 'POST',
@@ -53,10 +54,14 @@ async function assignParcel() {
 	console.log(json)
 
 	if(response.status === 200) {
-		showMessage(`parcel assigned to courier`)
-		await loadPage('home')
+		if(json.data.todeliver === 'true') {
+			await loadPage('home')
+			history.pushState(null, null, `?number=${data.textbox}`)	
+		} else {
+			await loadPage('home')
+			showMessage(`parcel assigned to courier`)
+		}
 	} else {
-		// document.querySelector('input[name="pass"]').value = ''
 		showMessage(json.errors[0].detail)
 	}
 
