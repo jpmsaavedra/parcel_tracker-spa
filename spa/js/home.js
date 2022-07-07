@@ -49,6 +49,7 @@ async function assignParcel() {
 	}
 	const response = await fetch(url, options)
 	console.log(response)
+	loadPage('home')
 }
 
 async function noLogin(node) {
