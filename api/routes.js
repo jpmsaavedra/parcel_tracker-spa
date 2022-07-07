@@ -5,7 +5,7 @@ import { Router } from 'oak'
 
 import { extractCredentials, dataURLtoFile, checkRole } from 'util'
 import { login, register } from 'accounts'
-import { send, getSenderParcels, getCourierParcels } from 'parcels'
+import { send, getSenderParcels, getCourierParcels, assignCourier } from 'parcels'
 
 const router = new Router()
 
@@ -144,18 +144,21 @@ router.get('/api/user/parcels', async context => {
 
 router.post('/api/courier/assign', async context => {
 	console.log('POST /api/courier/assign')
+	const token = context.request.headers.get('Authorization')
+	console.log(`auth: ${token}`)
 	try {
-		const token = context.request.headers.get('Authorization')
-		console.log(`auth: ${token}`)
+		const credentials = extractCredentials(token)
+		const username = await login(credentials)
+		console.log(`username: ${username}`)
 		const body = await context.request.body()
 		const data = await body.value
 		const trackNumber = data.textbox
-		// await send(data)
+		await assignCourier(trackNumber, username)
 		context.response.status = 201
 		context.response.body = JSON.stringify(
 			{
 				data: {
-					message: 'file uploaded'
+					message: 'parcel assigned to courier'
 				}
 			}
 		)

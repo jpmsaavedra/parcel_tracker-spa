@@ -52,3 +52,32 @@ export async function getCourierParcels(user) {
 		throw err
 	}
 }
+
+export async function assignCourier(trackNumber, username) {
+	let sql = `SELECT * FROM parcels WHERE track_number="${trackNumber}" AND status="not-dispatched"`
+	let records
+	try {
+		records = await db.query(sql)
+		console.log(records)
+		
+	} catch(err) {
+		console.log('connection login error thrown', err)
+		err.data = {
+			code: 500,
+			title: '500 Internal server error',
+			detail: 'the API database is currently down'
+		}
+		throw err
+	}
+	if(!records[0]) {
+		const err = new Error()
+		err.data = {
+			code: 401,
+			title: 'Change to not found',
+			detail: `Change to number not found`
+		}
+		throw err
+	}
+	sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
+	records = await db.query(sql)
+}
