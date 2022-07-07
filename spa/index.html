@@ -77,7 +77,15 @@
 			<button id="button"></button>
 		</section>
 	</template>
-	<template id="loggedin">	
+	<template id="textbox">
+		<section>
+			<form name="textbox" method="post">
+			<p><label for="textbox">Track Number:<br></label><input type="text" name="textbox" required="required" /></p>
+			<p><button type="submit">Send</button></p>
+		</form>
+		</section>
+	</template>
+	<template id="loggedinuser">	
 		<hr>
 		<section>		
 			<p id="recname"></p>
@@ -86,13 +94,22 @@
 			<p id="parcelstatus"></p>
 		</section>
 	</template>
+	<template id="loggedincourier">	
+		<hr>
+		<section>		
+			<p id="recname"></p>
+			<p id="destpostcode"></p>
+			<p id="weight"></p>
+			<p id="elapsedtime"></p>
+		</section>
+	</template>
 
 	<template id="send">
 		<h2>Send Parcel</h2>
 		<form name="upload" method="post">
 			<p><label for="senderpostcode">Your Postcode</label><br /><input type="text" name="senderpostcode" placeholder="postcode" required="required" /></p>
 			<p><label for="receiverpostcode">Recipient's Postcode</label><br /><input type="text" name="receiverpostcode" placeholder="postcode" required="required" /></p>
-			<p><label for="weight">Weight</label><br /><input type="range" name="weight" min="1" max="20" value="1" oninput="this.nextElementSibling.value = this.value" /><output name="amount_val">1</output></p>
+			<p><label for="weight">Weight</label><br /><input type="range" name="weight" min="1" max="20" value="6" oninput="this.nextElementSibling.value = this.value" /><output name="amount_val">1</output></p>
 			<p><label for="recipient">Recepient's Name</label><br /><input type="text" name="recipient" placeholder="name" required="required" /></p>
 			<p><label for="address">Full Address</label><br /><textarea type="text" name="address" placeholder="address" rows="4" cols="40" required="required" ></textarea></p>
 			<p><button type="submit">Send</button></p>
