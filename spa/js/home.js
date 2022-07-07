@@ -55,7 +55,7 @@ async function assignParcel() {
 
 	if(response.status === 200) {
 		if(json.data.todeliver === 'true') {
-			await loadPage('home')
+			await loadPage('deliver')
 			history.pushState(null, null, `?number=${data.textbox}`)	
 		} else {
 			await loadPage('home')

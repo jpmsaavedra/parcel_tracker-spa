@@ -1,14 +1,16 @@
 
 /* send.js */
 
-import { customiseNavbar , loadPage, showMessage } from '../util.js'
+console.log('SEND')
+
+import { customiseNavbar, loadPage, showMessage, router } from '../util.js'
 
 export async function setup(node) {
 	try {
 		console.log('SENDPARCEL: setup')
 		console.log(node)
 		document.querySelector('header p').innerText = 'Send a Parcel'
-		customiseNavbar(['home', 'send', 'logout'])
+		customiseNavbar(['home', 'logout'])
 		if(localStorage.getItem('authorization') === null) {
 			history.pushState(null, null, '/login')
 			await router()
