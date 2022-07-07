@@ -3,9 +3,9 @@
 
 import { Router } from 'oak'
 
-import { extractCredentials, dataURLtoFile } from 'util'
+import { extractCredentials, dataURLtoFile, checkRole } from 'util'
 import { login, register } from 'accounts'
-import { send, getSenderParcels } from 'parcels'
+import { send, getSenderParcels, getCourierParcels, assignCourier } from 'parcels'
 
 const router = new Router()
 
@@ -78,8 +78,8 @@ router.post('/api/files', async context => {
 	}
 })
 
-router.post('/api/send', async context => {
-	console.log('POST /api/send')
+router.post('/api/user/send', async context => {
+	console.log('POST /api/user/send')
 	try {
 		const token = context.request.headers.get('Authorization')
 		console.log(`auth: ${token}`)
@@ -105,8 +105,8 @@ router.post('/api/send', async context => {
 	}
 })
 
-router.get('/api/parcels', async context => {
-	console.log('GET /api/parcels')
+router.get('/api/user/parcels', async context => {
+	console.log('GET /api/user/parcels')
 	const token = context.request.headers.get('Authorization')
 	console.log(`auth: ${token}`)
 	context.response.headers.set('Content-Type', 'application/json')
@@ -115,18 +115,61 @@ router.get('/api/parcels', async context => {
 		console.log(credentials)
 		const username = await login(credentials)
 		console.log(`username: ${username}`)
+		const { role } = await checkRole(username)
 
-		const parcels = await getSenderParcels(username)
+		if(role === 1){
+			const parcels = await getSenderParcels(username)
 
-		context.response.body = JSON.stringify(
-			{
-				data: { parcels }
-			}, null, 2)
+			context.response.body = JSON.stringify(
+				{
+					data: { parcels, role }
+				}, null, 2)
+		} else if(role === 2){
+			const parcels = await getCourierParcels(username)
+
+			context.response.body = JSON.stringify(
+				{
+					data: { parcels, role }
+				}, null, 2)
+		}
 	} catch(err) {
 		err.data = {
 			code: 401,
 			title: '401 Unauthorized',
 			detail: err.message
+		}
+		throw err
+	}
+})
+
+router.post('/api/courier/assign', async context => {
+	console.log('POST /api/courier/assign')
+	const token = context.request.headers.get('Authorization')
+	console.log(`auth: ${token}`)
+	try {
+		const credentials = extractCredentials(token)
+		const username = await login(credentials)
+		console.log(`username: ${username}`)
+		const body = await context.request.body()
+		const data = await body.value
+		const trackNumber = data.textbox
+		await assignCourier(trackNumber, username)
+		context.response.status = 200
+		context.response.body = JSON.stringify(
+			{
+				data: {
+					message: 'parcel assigned to courier'
+				}
+			}
+		)
+	} catch(err) {
+		err.data = {
+			// code: 500,
+			// title: '500 Internal Server Error',
+			code: err.code,
+			title: err.title,
+			detail: err.message
+			// detail: 'debugging'
 		}
 		throw err
 	}

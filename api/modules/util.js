@@ -3,6 +3,7 @@
 
 import { etag } from 'oak'
 import { Base64 } from 'bb64'
+import { db } from 'db'
 // import { Md5 } from 'md5'
 // import { customAlphabet } from 'nanoidCustom'
 
@@ -43,7 +44,8 @@ export async function getEtag(path) {
 	return tag
 }
 
-// export async function getTrackNum() {
-// 	const num = await customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
-// 	return num
-// }
+export async function checkRole(user) {
+	const sql = `SELECT role FROM accounts WHERE user="${user}";`
+	const role = await db.query(sql)
+	return role[0]
+}
