@@ -15,25 +15,28 @@ export async function setup(node) {
 			history.pushState(null, null, '/login')
 			await router()
 		} 
-		const position = await getCurrentPosition()
-		console.log(position)
-		const lat = position.coords.latitude
-		const lon = position.coords.longitude
-		const locationCords = `${lat},${lon}`
-		console.log(locationCords)
 
 		console.log("debug 5")
 
-		let urlParams = (new URL(document.location)).searchParams
-		let number = urlParams.get("number")
-		console.log(number)
+		const cords = await getCords()
 
-		node.getElementById('tracknumber').setAttribute('value', `${number}`)
-
-		node.querySelector('form').addEventListener('submit', eventWrapper)
+		node.querySelector('form').addEventListener('submit', eventWrapper.bind(null, cords))
 	} catch(err) {
 		console.error(err)
 	}
+}
+
+function eventWrapper(cords) {
+	event.preventDefault()
+	const trackingNumber = getTrackNumber()
+	deliverParcel(trackingNumber, cords)
+}
+
+function getTrackNumber () {
+	let urlParams = (new URL(document.location)).searchParams
+	let number = urlParams.get("number")
+	console.log(number)
+	return number
 }
 
 async function getCords() {
@@ -45,12 +48,6 @@ async function getCords() {
 	return locationCords
 }
 
-function eventWrapper() {
-	event.preventDefault()
-	const cords = getCords()
-	deliverParcel(cords)
-}
-
 function getCurrentPosition() {
     return new Promise( (resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
@@ -60,11 +57,12 @@ function getCurrentPosition() {
     })
 }
 
-async function deliverParcel(location) {
+async function deliverParcel(trackNum, location) {
 	event.preventDefault()
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
 	const file = document.querySelector('input[name="file"]').files[0]
+	data.trackingNumber = trackNum
 	file.base64 = await file2DataURI(file)
 	console.log(file)
 	data.file = file.base64
