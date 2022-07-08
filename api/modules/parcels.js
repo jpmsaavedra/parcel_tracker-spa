@@ -6,14 +6,11 @@ import { db } from 'db'
 import { cryptoRandomString } from 'cryptoRandomString'
 
 export async function send(parcel) {
-	const { senderpostcode, receiverpostcode, weight, recipient, address, sender } = parcel
-	
+	const { senderpostcode, receiverpostcode, weight, recipient, address, sender } = parcel	
 	const timestamp = Date.now()
 	const status = 'not-dispatched'
 	const trackingNumber = await cryptoRandomString({length: 10, type: 'distinguishable'})
-
 	console.log(trackingNumber)
-
 	const sql = `INSERT INTO parcels(track_number, sender_name, sender_post, recipient_name, recipient_post, address, weight, time, status) VALUES("${trackingNumber}", "${sender}", "${senderpostcode}", "${recipient}", "${receiverpostcode}", "${address}", "${weight}", "${timestamp}", "${status}");`
 	console.log(sql)
 	await db.query(sql)
@@ -27,7 +24,7 @@ export async function getSenderParcels(user) {
 		const data = await db.query(sql)
 		return data
 	} catch(err) {
-		console.log('connection login error thrown', err)
+		console.log('connection error thrown', err)
 		err.data = {
 			code: 500,
 			title: '500 Internal server error',
@@ -43,7 +40,7 @@ export async function getCourierParcels(user) {
 		const data = await db.query(sql)
 		return data
 	} catch(err) {
-		console.log('connection login error thrown', err)
+		console.log('connection error thrown', err)
 		err.data = {
 			code: 500,
 			title: '500 Internal server error',
@@ -58,8 +55,7 @@ export async function assignCourier(trackNumber, username) {
 	let records
 	try {
 		records = await db.query(sql)
-		console.log(records)
-		
+		console.log(records)		
 	} catch(err) {
 		console.log('connection login error thrown', err)
 		err.data = {
@@ -90,8 +86,7 @@ export async function isDeliverable(trackNumber, username) {
 	let records
 	try {
 		records = await db.query(sql)
-		console.log(records)
-		
+		console.log(records)		
 	} catch(err) {
 		console.log('connection login error thrown', err)
 		err.data = {
@@ -104,16 +99,11 @@ export async function isDeliverable(trackNumber, username) {
 	if(records.length === 0) {
 		return false
 	}
-	// sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
-	// records = await db.query(sql)
 	return true
 }
 
 export async function deliverParcel(parcel) {
-	// const { senderpostcode, receiverpostcode, weight, recipient, address, sender } = parcel
-	
 	const timestamp = Date.now()
-
 	const sql = `UPDATE parcels SET signature="${parcel.file}", delivered_time="${timestamp}", delivered_location="${parcel.location}", delivered_to="${parcel.name}", status="delivered" WHERE track_number="${parcel.trackingNumber}";`
 	console.log(sql)
 	await db.query(sql)

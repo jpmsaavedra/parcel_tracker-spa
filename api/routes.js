@@ -51,32 +51,32 @@ router.post('/api/accounts', async context => {
 	context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
 })
 
-router.post('/api/files', async context => {
-	console.log('POST /api/files')
-	try {
-		const token = context.request.headers.get('Authorization')
-		console.log(`auth: ${token}`)
-		const body = await context.request.body()
-		const data = await body.value
-		console.log(data)
-		dataURLtoFile(data.base64, data.user)
-		context.response.status = 201
-		context.response.body = JSON.stringify(
-			{
-				data: {
-					message: 'file uploaded'
-				}
-			}
-		)
-	} catch(err) {
-		err.data = {
-			code: 500,
-			title: '500 Internal Server Error',
-			detail: err.message
-		}
-		throw err
-	}
-})
+// router.post('/api/files', async context => {
+// 	console.log('POST /api/files')
+// 	try {
+// 		const token = context.request.headers.get('Authorization')
+// 		console.log(`auth: ${token}`)
+// 		const body = await context.request.body()
+// 		const data = await body.value
+// 		console.log(data)
+// 		dataURLtoFile(data.base64, data.user)
+// 		context.response.status = 201
+// 		context.response.body = JSON.stringify(
+// 			{
+// 				data: {
+// 					message: 'file uploaded'
+// 				}
+// 			}
+// 		)
+// 	} catch(err) {
+// 		err.data = {
+// 			code: 500,
+// 			title: '500 Internal Server Error',
+// 			detail: err.message
+// 		}
+// 		throw err
+// 	}
+// })
 
 router.post('/api/user/send', async context => {
 	console.log('POST /api/user/send')
@@ -116,7 +116,6 @@ router.get('/api/user/parcels', async context => {
 		const username = await login(credentials)
 		console.log(`username: ${username}`)
 		const { role } = await checkRole(username)
-
 		if(role === 1){
 			const parcels = await getSenderParcels(username)
 
@@ -184,7 +183,6 @@ router.post('/api/courier/assign', async context => {
 			code: err.code,
 			title: err.title,
 			detail: err.message
-			// detail: 'debugging'
 		}
 		throw err
 	}
