@@ -195,10 +195,12 @@ router.post('/api/parcels/deliver', async context => {
 	try {
 		const token = context.request.headers.get('Authorization')
 		console.log(`auth: ${token}`)
+		const credentials = extractCredentials(token)
 		const username = await login(credentials)
 		console.log(`username: ${username}`)
 		const body = await context.request.body()
 		const data = await body.value
+		data.file = dataURLtoFile(data.file, username)
 		console.log(data)				
 		await deliverParcel(data)
 		context.response.status = 200
