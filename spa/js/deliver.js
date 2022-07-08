@@ -83,11 +83,11 @@ async function deliverParcel(trackNum, location) {
 	const json = await response.json()
 	console.log(json)
 
-	// if (response.status === 200) {
-	// 	loadPage('home')
-	// 	showMessage('Parcel sent!')
-	// } else {
-	// 	showMessage('Error')
-	// }
+	if (response.status === 200) {
+		loadPage('home')
+		showMessage('Parcel sent!')
+	} else {
+		showMessage('Error')
+	}
 }
 

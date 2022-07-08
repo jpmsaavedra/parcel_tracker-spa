@@ -38,7 +38,7 @@ export async function getSenderParcels(user) {
 }
 
 export async function getCourierParcels(user) {
-	let sql = `SELECT * FROM parcels WHERE assigned_to="${user}";`
+	let sql = `SELECT * FROM parcels WHERE assigned_to="${user}" AND (status="not-dispatched" OR status="in-transit");`
 	try {
 		const data = await db.query(sql)
 		return data
