@@ -124,21 +124,21 @@ async function loggedIn(node) {
 	const parcelsList = json.data.parcels
 	console.log(parcelsList)
 	parcelsList.forEach((parcel) => {
-		const template2 = document.querySelector('template#loggedinuser')
+		const template2 = document.querySelector('template#loggedin')
 		const fragment2 = template2.content.cloneNode(true)
 		const unixTime = parcel.time
 		const dateTime = new Date(+unixTime)
 		const elapsedHours = Math.floor((Date.now() - unixTime)/1000/60/60)		
 		if(role === 1){
-			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
-			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-			fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
-			fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+			fragment2.querySelector('p:nth-of-type(1)').innerText = `Recipient name: ${parcel.recipient_name}`
+			fragment2.querySelector('p:nth-of-type(2)').innerText = `Recipient postcode: ${parcel.recipient_post}`
+			fragment2.querySelector('p:nth-of-type(3)').innerText = `Date: ${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
+			fragment2.querySelector('p:nth-of-type(4)').innerText = `Status: ${parcel.status}`
 		} else if(role === 2){
-			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
-			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-			fragment2.querySelector('#timeadded').innerText = `${parcel.weight}Kg`
-			fragment2.querySelector('#parcelstatus').innerText = `${elapsedHours} Hours`
+			fragment2.querySelector('p:nth-of-type(1)').innerText = `Recipient name: ${parcel.recipient_name}`
+			fragment2.querySelector('p:nth-of-type(2)').innerText = `Recipient postcode: ${parcel.recipient_post}`
+			fragment2.querySelector('p:nth-of-type(3)').innerText = `Weight: ${parcel.weight}Kg`
+			fragment2.querySelector('p:nth-of-type(4)').innerText = `Time elapsed: ${elapsedHours} Hours`
 		}
 		node.appendChild(fragment2)
 	})
