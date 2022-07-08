@@ -87,7 +87,7 @@ router.post('/api/user/send', async context => {
 		const data = await body.value
 		console.log(data)
 		await send(data)
-		context.response.status = 201
+		context.response.status = 200
 		context.response.body = JSON.stringify(
 			{
 				data: {

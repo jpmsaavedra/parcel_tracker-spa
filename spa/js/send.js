@@ -28,7 +28,7 @@ async function sendParcel() {
 	const data = Object.fromEntries(formData.entries())
 	data.sender = localStorage.getItem('username')
 	console.log(JSON.stringify(data))
-	const url = '/api/parcels/deliver'
+	const url = '/api/user/send'
 	const options = {
 		method: 'POST',
 		headers: {
