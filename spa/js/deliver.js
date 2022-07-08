@@ -15,11 +15,7 @@ export async function setup(node) {
 			history.pushState(null, null, '/login')
 			await router()
 		} 
-
-		console.log("debug 5")
-
 		const cords = await getCords()
-
 		node.querySelector('form').addEventListener('submit', eventWrapper.bind(null, cords))
 	} catch(err) {
 		console.error(err)

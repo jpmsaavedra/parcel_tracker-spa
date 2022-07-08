@@ -1,6 +1,8 @@
 
 /* home.js */
 
+console.log('HOME')
+
 import { customiseNavbar, loadPage, showMessage } from '../util.js'
 
 export async function setup(node) {
@@ -8,7 +10,7 @@ export async function setup(node) {
 	try {
 		console.log(node)
 		document.querySelector('header p').innerText = 'Home'
-		customiseNavbar(['home', 'foo', 'logout']) // navbar if logged in
+		customiseNavbar(['home', 'logout']) // navbar if logged in
 		const token = localStorage.getItem('authorization')
 		console.log(token)
 		if(token === null) {
@@ -16,14 +18,7 @@ export async function setup(node) {
 			await noLogin(node)
 		} else {
 			await loggedIn(node)
-			// if(role === 1){
-			// 	node.getElementById('button').addEventListener('click', await redirectSend)
-			// } else if(role === 2){
-			// 	node.querySelector('form').addEventListener('submit', await redirectSend)
-			// }
 		}
-		// add content to the page
-		//await addContent(node)
 	} catch(err) {
 		console.error(err)
 	}
@@ -49,15 +44,12 @@ async function assignParcel() {
 		body: JSON.stringify(data)
 	}
 	const response = await fetch(url, options)
-	console.log(response)
 	const json = await response.json()
 	console.log(json)
 
 	if(response.status === 200) {
 		if(json.data.todeliver === 'true') {
-			console.log("debug 1")
 			loadPage('deliver')
-			console.log("debug 2")
 			history.pushState(null, null, `?number=${data.textbox}`)	
 		} else {
 			loadPage('home')
@@ -100,24 +92,20 @@ async function loggedIn(node) {
 	const response = await fetch(url, options)
 	console.log(response)
 	const json = await response.json()
-	// console.log(json.data.parcels)
+	console.log(json)
 	const role = json.data.role
 
 	if(role === 1){
 		const template = document.querySelector('template#button')
 		const fragment = template.content.cloneNode(true)
 		fragment.querySelector('button').innerText = "Send Parcel"
-
 		fragment.querySelector('button').addEventListener('click', await redirectSend)
-
 		node.appendChild(fragment)
 	} else if (role === 2){
 		const template = document.querySelector('template#textbox')
 		const fragment = template.content.cloneNode(true)
 		fragment.querySelector('button').innerText = "Submit"
-
 		fragment.querySelector('form').addEventListener('submit', await assignParcel)
-
 		node.appendChild(fragment)
 	}
 
