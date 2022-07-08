@@ -15,7 +15,7 @@ export async function setup(node) {
 				loadPage('login')
 				showMessage('you are logged out')
 			} else {
-				loadPage('foo')
+				loadPage('home')
 			}
 		}))
 	} catch(err) {
