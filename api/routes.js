@@ -5,7 +5,7 @@ import { Router } from 'oak'
 
 import { extractCredentials, dataURLtoFile, checkRole } from 'util'
 import { login, register } from 'accounts'
-import { send, getSenderParcels, getCourierParcels, assignCourier, deliverParcel } from 'parcels'
+import { send, getSenderParcels, getCourierParcels, assignCourier, isDeliverable, deliverParcel } from 'parcels'
 
 const router = new Router()
 
@@ -153,7 +153,7 @@ router.post('/api/courier/assign', async context => {
 		const body = await context.request.body()
 		const data = await body.value
 		const trackNumber = data.textbox
-		const isToDeliver = await deliverParcel(trackNumber, username)
+		const isToDeliver = await isDeliverable(trackNumber, username)
 		if(isToDeliver === true) {
 			context.response.status = 200
 			context.response.body = JSON.stringify(
@@ -185,6 +185,35 @@ router.post('/api/courier/assign', async context => {
 			title: err.title,
 			detail: err.message
 			// detail: 'debugging'
+		}
+		throw err
+	}
+})
+
+router.post('/api/parcels/deliver', async context => {
+	console.log('POST /api/parcels/deliver')
+	try {
+		const token = context.request.headers.get('Authorization')
+		console.log(`auth: ${token}`)
+		const username = await login(credentials)
+		console.log(`username: ${username}`)
+		const body = await context.request.body()
+		const data = await body.value
+		console.log(data)				
+		await deliverParcel(data)
+		context.response.status = 200
+		context.response.body = JSON.stringify(
+			{
+				data: {
+					message: 'parcel delivered'
+				}
+			}
+		)
+	} catch(err) {
+		err.data = {
+			code: 500,
+			title: '500 Internal Server Error',
+			detail: err.message
 		}
 		throw err
 	}

@@ -14,7 +14,7 @@ export async function send(parcel) {
 
 	console.log(trackingNumber)
 
-	const sql = `INSERT INTO parcels(track_number, sender_name, sender_post, recipient_name, recipient_post, address, weight, time, status) VALUES("${trackingNumber}", "${sender}", "${senderpostcode}", "${recipient}", "${receiverpostcode}", "${address}", "${weight}", "${timestamp}", "${status}")`
+	const sql = `INSERT INTO parcels(track_number, sender_name, sender_post, recipient_name, recipient_post, address, weight, time, status) VALUES("${trackingNumber}", "${sender}", "${senderpostcode}", "${recipient}", "${receiverpostcode}", "${address}", "${weight}", "${timestamp}", "${status}");`
 	console.log(sql)
 	await db.query(sql)
 	console.log('PARCEL SENT')
@@ -54,7 +54,7 @@ export async function getCourierParcels(user) {
 }
 
 export async function assignCourier(trackNumber, username) {
-	let sql = `SELECT * FROM parcels WHERE track_number="${trackNumber}" AND status="not-dispatched"`
+	let sql = `SELECT * FROM parcels WHERE track_number="${trackNumber}" AND status="not-dispatched";`
 	let records
 	try {
 		records = await db.query(sql)
@@ -85,7 +85,7 @@ export async function assignCourier(trackNumber, username) {
 	records = await db.query(sql)
 }
 
-export async function deliverParcel(trackNumber, username) {
+export async function isDeliverable(trackNumber, username) {
 	let sql = `SELECT * FROM parcels WHERE track_number="${trackNumber}" AND assigned_to="${username}"`
 	let records
 	try {
@@ -106,5 +106,17 @@ export async function deliverParcel(trackNumber, username) {
 	}
 	// sql = `UPDATE parcels SET assigned_to="${username}", status="in-transit" WHERE track_number="${trackNumber}";`
 	// records = await db.query(sql)
+	return true
+}
+
+export async function deliverParcel(parcel) {
+	// const { senderpostcode, receiverpostcode, weight, recipient, address, sender } = parcel
+	
+	const timestamp = Date.now()
+
+	const sql = `UPDATE parcels SET signature="${parcel.file}", delivered_time="${timestamp}", delivered_location="${parcel.location}", delivered_to="${parcel.name}", status="delivered" WHERE track_number="${parcel.trackingNumber}";`
+	console.log(sql)
+	await db.query(sql)
+	console.log('PARCEL DELIVERED')
 	return true
 }

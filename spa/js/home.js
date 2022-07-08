@@ -55,10 +55,12 @@ async function assignParcel() {
 
 	if(response.status === 200) {
 		if(json.data.todeliver === 'true') {
-			await loadPage('deliver')
+			console.log("debug 1")
+			loadPage('deliver')
+			console.log("debug 2")
 			history.pushState(null, null, `?number=${data.textbox}`)	
 		} else {
-			await loadPage('home')
+			loadPage('home')
 			showMessage(`parcel assigned to courier`)
 		}
 	} else {

@@ -28,7 +28,7 @@ async function sendParcel() {
 	const data = Object.fromEntries(formData.entries())
 	data.sender = localStorage.getItem('username')
 	console.log(JSON.stringify(data))
-	const url = '/api/user/send'
+	const url = '/api/parcels/deliver'
 	const options = {
 		method: 'POST',
 		headers: {
@@ -43,7 +43,7 @@ async function sendParcel() {
 	const json = await response.json()
 	console.log(json)
 
-	if (response.status === 201) {
+	if (response.status === 200) {
 		showMessage('Parcel sent!')
 		loadPage('home')
 	} else {
