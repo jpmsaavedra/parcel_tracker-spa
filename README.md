@@ -1,3 +1,5 @@
 # Single-Page Application to track parcels delivery
 
-> To be completed...
+> Features completed: 1, 2, 3, 4
+
+Joao Saavedra 8965518
