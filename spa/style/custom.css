@@ -131,12 +131,12 @@ nav li > a {
 }
 
 nav li:hover a {
-/* 	background-color: var(--colorPrimaryVariant); */
-/* 	color: white; */
+	/* background-color: var(--colorPrimaryVariant); */
+	color: white;
 }
 
 nav li:hover {
-/* 	background-color: grey; */
+	background-color: grey;
 }
 
 .currentpage {
@@ -165,7 +165,7 @@ main h2 {
 	margin-bottom: 0.3em;
 	margin-top: 0.3em;
 /* 	font-size: 1.6em; */
-	font-size: max(2vw, 1em);
+	font-size: max(1vw, 1em);
 	font-weight: normal;
 }
 
