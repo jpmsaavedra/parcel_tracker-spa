@@ -1,19 +1,20 @@
 
 /* send.js */
 
-import { customiseNavbar , loadPage, showMessage } from '../util.js'
+console.log('SEND')
+
+import { customiseNavbar, loadPage, showMessage, router } from '../util.js'
 
 export async function setup(node) {
 	try {
 		console.log('SENDPARCEL: setup')
 		console.log(node)
 		document.querySelector('header p').innerText = 'Send a Parcel'
-		customiseNavbar(['home', 'send', 'logout'])
+		customiseNavbar(['home', 'logout'])
 		if(localStorage.getItem('authorization') === null) {
 			history.pushState(null, null, '/login')
 			await router()
 		}
-		// there is a token in localstorage
 		node.querySelector('form').addEventListener('submit', await sendParcel)
 	} catch(err) {
 		console.error(err)
@@ -26,7 +27,7 @@ async function sendParcel() {
 	const data = Object.fromEntries(formData.entries())
 	data.sender = localStorage.getItem('username')
 	console.log(JSON.stringify(data))
-	const url = '/api/user/send'
+	const url = '/api/v1/parcels/send'
 	const options = {
 		method: 'POST',
 		headers: {
@@ -41,7 +42,7 @@ async function sendParcel() {
 	const json = await response.json()
 	console.log(json)
 
-	if (response.status === 201) {
+	if (response.status === 200) {
 		showMessage('Parcel sent!')
 		loadPage('home')
 	} else {

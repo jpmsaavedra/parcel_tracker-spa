@@ -17,10 +17,8 @@
 			<ul>
 				<li><a href="/">Home</a></li>
 				<li><a href="/register">Register</a></li>
-				<li><a href="/foo">Foo</a></li>
 				<li><a href="/login">Log in</a></li>
 				<li><a href="/logout">Log out</a></li>
-				<li><a href="/send">Send Parcel</a></li>
 			</ul>
 		</nav>
 		<main>
@@ -49,23 +47,6 @@
 			<p>Do you want to log out?</p>
 			<p><button>OK</button><button>Cancel</button></p>
 	</template>
-	<template id="foo">
-		<h2>Uploading File Demo</h2>
-		<form name="upload" method="post">
-			<p><label for="pass">Choose a file</label><br /><input type="file" name="file" /></p>
-			<p><button type="submit">Upload</button></p>
-		</form>
-		<h2>Useful Data</h2>
-		<p>You can pass data to a page using different parts of the url:</p>
-		<p>Try <a href="/foo/bar?number=42#12345">this link</a> to see an example.</p>
-		<ul>
-		<li id="href">href</li>
-		<li id="pathname">path</li>
-		<li id="search">search</li>
-		<li id="hash">hash</li>
-		</ul>
-		<p>This page is a placeholder to help you understand how to access data in the URL and upload a file to a REST API. Once you understand how it works it should be removed from your project.</p>
-	</template>
 	<template id="loggedoff">
 		<section>
 			<h2></h2>
@@ -85,36 +66,33 @@
 		</form>
 		</section>
 	</template>
-	<template id="loggedinuser">	
+	<template id="loggedin">	
 		<hr>
 		<section>		
-			<p id="recname"></p>
-			<p id="destpostcode"></p>
-			<p id="timeadded"></p>
-			<p id="parcelstatus"></p>
+			<p></p>
+			<p></p>
+			<p></p>
+			<p></p>
 		</section>
 	</template>
-	<template id="loggedincourier">	
-		<hr>
-		<section>		
-			<p id="recname"></p>
-			<p id="destpostcode"></p>
-			<p id="weight"></p>
-			<p id="elapsedtime"></p>
-		</section>
-	</template>
-
 	<template id="send">
 		<h2>Send Parcel</h2>
 		<form name="upload" method="post">
 			<p><label for="senderpostcode">Your Postcode</label><br /><input type="text" name="senderpostcode" placeholder="postcode" required="required" /></p>
 			<p><label for="receiverpostcode">Recipient's Postcode</label><br /><input type="text" name="receiverpostcode" placeholder="postcode" required="required" /></p>
-			<p><label for="weight">Weight</label><br /><input type="range" name="weight" min="1" max="20" value="6" oninput="this.nextElementSibling.value = this.value" /><output name="amount_val">1</output></p>
+			<p><label for="weight">Weight in Kg</label><br /><input type="range" name="weight" min="1" max="20" value="11" oninput="this.nextElementSibling.value = this.value" /><output name="amount_val">11</output></p>
 			<p><label for="recipient">Recepient's Name</label><br /><input type="text" name="recipient" placeholder="name" required="required" /></p>
 			<p><label for="address">Full Address</label><br /><textarea type="text" name="address" placeholder="address" rows="4" cols="40" required="required" ></textarea></p>
 			<p><button type="submit">Send</button></p>
 		</form>
 	</template>
-
+	<template id="deliver">
+		<h2>Deliver Parcel</h2>
+		<form name="upload" method="post">
+			<p><label for="name">Name of person receiving</label><br /><input type="text" name="name" placeholder="name" required="required" /></p>
+			<p><label for="file">Signature</label><br /><input type="file" name="file" required="required"/></p>
+			<p><button type="submit">Deliver</button></p>
+		</form>
+	</template>
 	</body>
 </html>

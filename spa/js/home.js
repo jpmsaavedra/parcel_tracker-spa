@@ -1,6 +1,8 @@
 
 /* home.js */
 
+console.log('HOME')
+
 import { customiseNavbar, loadPage, showMessage } from '../util.js'
 
 export async function setup(node) {
@@ -8,7 +10,7 @@ export async function setup(node) {
 	try {
 		console.log(node)
 		document.querySelector('header p').innerText = 'Home'
-		customiseNavbar(['home', 'foo', 'logout']) // navbar if logged in
+		customiseNavbar(['home', 'logout']) // navbar if logged in
 		const token = localStorage.getItem('authorization')
 		console.log(token)
 		if(token === null) {
@@ -16,14 +18,7 @@ export async function setup(node) {
 			await noLogin(node)
 		} else {
 			await loggedIn(node)
-			// if(role === 1){
-			// 	node.getElementById('button').addEventListener('click', await redirectSend)
-			// } else if(role === 2){
-			// 	node.querySelector('form').addEventListener('submit', await redirectSend)
-			// }
 		}
-		// add content to the page
-		//await addContent(node)
 	} catch(err) {
 		console.error(err)
 	}
@@ -37,7 +32,8 @@ async function assignParcel() {
 	event.preventDefault()
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
-	const url = 'api/courier/assign'
+	console.log(data)
+	const url = 'api/v1/parcels/update'
 	const options = {
 		method: 'POST',
 		headers: {
@@ -48,15 +44,18 @@ async function assignParcel() {
 		body: JSON.stringify(data)
 	}
 	const response = await fetch(url, options)
-	console.log(response)
 	const json = await response.json()
 	console.log(json)
 
 	if(response.status === 200) {
-		showMessage(`parcel assigned to courier`)
-		await loadPage('home')
+		if(json.data.todeliver === 'true') {
+			loadPage('deliver')
+			history.pushState(null, null, `?number=${data.textbox}`)	
+		} else {
+			loadPage('home')
+			showMessage(`parcel assigned to courier`)
+		}
 	} else {
-		// document.querySelector('input[name="pass"]').value = ''
 		showMessage(json.errors[0].detail)
 	}
 
@@ -81,7 +80,7 @@ async function loggedIn(node) {
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
 
-	const url = 'api/user/parcels'
+	const url = 'api/v1/parcels'
 	const options = {
 		method: 'GET',
 		headers: {
@@ -93,45 +92,41 @@ async function loggedIn(node) {
 	const response = await fetch(url, options)
 	console.log(response)
 	const json = await response.json()
-	// console.log(json.data.parcels)
+	console.log(json)
 	const role = json.data.role
 
 	if(role === 1){
 		const template = document.querySelector('template#button')
 		const fragment = template.content.cloneNode(true)
 		fragment.querySelector('button').innerText = "Send Parcel"
-
 		fragment.querySelector('button').addEventListener('click', await redirectSend)
-
 		node.appendChild(fragment)
 	} else if (role === 2){
 		const template = document.querySelector('template#textbox')
 		const fragment = template.content.cloneNode(true)
 		fragment.querySelector('button').innerText = "Submit"
-
 		fragment.querySelector('form').addEventListener('submit', await assignParcel)
-
 		node.appendChild(fragment)
 	}
 
 	const parcelsList = json.data.parcels
 	console.log(parcelsList)
 	parcelsList.forEach((parcel) => {
-		const template2 = document.querySelector('template#loggedinuser')
+		const template2 = document.querySelector('template#loggedin')
 		const fragment2 = template2.content.cloneNode(true)
 		const unixTime = parcel.time
 		const dateTime = new Date(+unixTime)
 		const elapsedHours = Math.floor((Date.now() - unixTime)/1000/60/60)		
 		if(role === 1){
-			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
-			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-			fragment2.querySelector('#timeadded').innerText = `${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
-			fragment2.querySelector('#parcelstatus').innerText = `${parcel.status}`
+			fragment2.querySelector('p:nth-of-type(1)').innerText = `Recipient name: ${parcel.recipient_name}`
+			fragment2.querySelector('p:nth-of-type(2)').innerText = `Recipient postcode: ${parcel.recipient_post}`
+			fragment2.querySelector('p:nth-of-type(3)').innerText = `Date: ${dateTime.getDate()+"/"+dateTime.getMonth()+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes()}`
+			fragment2.querySelector('p:nth-of-type(4)').innerText = `Status: ${parcel.status}`
 		} else if(role === 2){
-			fragment2.querySelector('#recname').innerText = `${parcel.recipient_name}`
-			fragment2.querySelector('#destpostcode').innerText = `${parcel.recipient_post}`
-			fragment2.querySelector('#timeadded').innerText = `${parcel.weight}Kg`
-			fragment2.querySelector('#parcelstatus').innerText = `${elapsedHours} Hours`
+			fragment2.querySelector('p:nth-of-type(1)').innerText = `Recipient name: ${parcel.recipient_name}`
+			fragment2.querySelector('p:nth-of-type(2)').innerText = `Recipient postcode: ${parcel.recipient_post}`
+			fragment2.querySelector('p:nth-of-type(3)').innerText = `Weight: ${parcel.weight}Kg`
+			fragment2.querySelector('p:nth-of-type(4)').innerText = `Time elapsed: ${elapsedHours} Hours`
 		}
 		node.appendChild(fragment2)
 	})

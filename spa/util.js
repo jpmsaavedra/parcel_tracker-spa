@@ -40,7 +40,9 @@ export function showMessage(message, delay = 3000) {
 
 export async function loadPage(page) {
 	history.pushState(null, null, `/${page}`)
+	console.log("debug 3")
 	await router()
+	console.log("debug 4")
 }
 
 export function getPageName(path = window.location.pathname) {
