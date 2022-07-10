@@ -17,7 +17,7 @@ router.get('/', async context => {
 	context.response.body = data
 })
 
-router.get('/api/accounts', async context => {
+router.get('/api/v1/accounts', async context => {
 	console.log('GET /api/accounts')
 	const token = context.request.headers.get('Authorization')
 	console.log(`auth: ${token}`)
@@ -41,7 +41,7 @@ router.get('/api/accounts', async context => {
 	}
 })
 
-router.post('/api/accounts', async context => {
+router.post('/api/v1/accounts', async context => {
 	console.log('POST /api/accounts')
 	const body  = await context.request.body()
 	const data = await body.value
@@ -78,8 +78,8 @@ router.post('/api/accounts', async context => {
 // 	}
 // })
 
-router.post('/api/user/send', async context => {
-	console.log('POST /api/user/send')
+router.post('/api/v1/parcels/send', async context => {
+	console.log('POST /api/parcels/send')
 	try {
 		const token = context.request.headers.get('Authorization')
 		console.log(`auth: ${token}`)
@@ -91,7 +91,7 @@ router.post('/api/user/send', async context => {
 		context.response.body = JSON.stringify(
 			{
 				data: {
-					message: 'file uploaded'
+					message: 'parcel sent'
 				}
 			}
 		)
@@ -105,8 +105,8 @@ router.post('/api/user/send', async context => {
 	}
 })
 
-router.get('/api/user/parcels', async context => {
-	console.log('GET /api/user/parcels')
+router.get('/api/v1/parcels', async context => {
+	console.log('GET /api/parcels')
 	const token = context.request.headers.get('Authorization')
 	console.log(`auth: ${token}`)
 	context.response.headers.set('Content-Type', 'application/json')
@@ -141,8 +141,8 @@ router.get('/api/user/parcels', async context => {
 	}
 })
 
-router.post('/api/courier/assign', async context => {
-	console.log('POST /api/courier/assign')
+router.post('/api/v1/parcels/update', async context => {
+	console.log('POST /api/parcels/update')
 	const token = context.request.headers.get('Authorization')
 	console.log(`auth: ${token}`)
 	try {
@@ -188,7 +188,7 @@ router.post('/api/courier/assign', async context => {
 	}
 })
 
-router.post('/api/parcels/deliver', async context => {
+router.post('/api/v1/parcels/deliver', async context => {
 	console.log('POST /api/parcels/deliver')
 	try {
 		const token = context.request.headers.get('Authorization')

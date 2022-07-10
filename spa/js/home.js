@@ -33,7 +33,7 @@ async function assignParcel() {
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
 	console.log(data)
-	const url = 'api/courier/assign'
+	const url = 'api/v1/parcels/update'
 	const options = {
 		method: 'POST',
 		headers: {
@@ -80,7 +80,7 @@ async function loggedIn(node) {
 	document.querySelector('aside > p').innerText = 'LOADING'
 	document.querySelector('aside').classList.remove('hidden')
 
-	const url = 'api/user/parcels'
+	const url = 'api/v1/parcels'
 	const options = {
 		method: 'GET',
 		headers: {

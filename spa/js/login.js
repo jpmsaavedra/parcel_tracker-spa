@@ -30,7 +30,7 @@ async function login() {
 			'Accept': 'application/vnd.api+json'
 		}
 	}
-	const response = await fetch('/api/accounts', options)
+	const response = await fetch('/api/v1/accounts', options)
 	const json = await response.json()
 
 	if(response.status === 200) {

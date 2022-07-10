@@ -64,7 +64,7 @@ async function deliverParcel(trackNum, location) {
 	data.file = file.base64
 	data.location = location
 	console.log(data)
-	const url = '/api/parcels/deliver'
+	const url = '/api/v1/parcels/deliver'
 	const options = {
 		method: 'POST',
 		headers: {

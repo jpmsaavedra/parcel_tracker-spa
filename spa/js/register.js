@@ -20,7 +20,7 @@ async function register() {
 	const formData = new FormData(event.target)
 	const data = Object.fromEntries(formData.entries())
 	console.log(data)
-	const url = '/api/accounts'
+	const url = '/api/v1/accounts'
 	const options = {
 		method: 'POST',
 		headers: {
