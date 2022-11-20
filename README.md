@@ -8,17 +8,15 @@ Senders can create an order for parcel delivery with all its information, courie
 
 ### Dependencies
 
-* bcrypt: "^5.0.0"
-* bcrypt-promise: "^2.0.0"
-* handlebars: "^4.7.6"
-* koa: "^2.13.0"
-* koa-body: "^4.2.0"
-* koa-router: "^9.4.0"
-* koa-session: "^6.0.0"
-* koa-static: "^5.0.0"
-* koa-views: "^6.3.0"
-* save-dev: "0.0.1-security"
-* sqlite-async: "^1.1.0"
+*asserts": "https://deno.land/std@0.140.0/testing/asserts.ts
+*bcrypt": "https://deno.land/x/bcrypt@v0.3.0/mod.ts
+*oak": "https://deno.land/x/oak@v10.5.1/mod.ts
+*bb64": "https://deno.land/x/bb64@1.1.0/mod.ts
+*mediaTypes": "https://deno.land/x/media_types@v3.0.2/mod.ts
+*md5": "https://deno.land/std@0.140.0/hash/md5.ts
+*mysql": "https://deno.land/x/mysql@v2.10.2/mod.ts
+*statusCodes": "https://deno.land/std@0.140.0/http/http_status.ts
+*superOak": "https://deno.land/x/superoak@4.7.0/mod.ts
 
 ### Run Website
 
